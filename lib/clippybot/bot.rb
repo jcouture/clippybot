@@ -1,5 +1,3 @@
-require 'pp'
-
 module ClippyBot
   class Bot
     def self.run
