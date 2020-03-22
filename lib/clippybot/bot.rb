@@ -30,10 +30,10 @@ module ClippyBot
       # If no message, then there's nothing to do
       return if message.nil?
 
-      message = message.strip
+      send_email(client, data, message.strip)
 
       # Echo back messages sent to our bot
-      client.web_client.chat_postMessage(channel: data.channel, text: message)
+      client.web_client.chat_postMessage(channel: data.channel, text: 'Sent!')
     end
 
     def self.is_direct_message?(data)
@@ -43,6 +43,26 @@ module ClippyBot
       channel = data.channel
       
       channel.starts_with?('D')
+    end
+
+    def self.send_email(client, data, message)
+      profile = client.users[data.user][:profile]
+
+      first_name = profile[:first_name]
+      puts "first_name: #{first_name}"
+      from = profile[:email]
+      puts "from_email: #{from}"
+      subject = "A new request from #{first_name}."
+      to = ENV['MAIL_TO']
+      puts "to: #{to}"
+      body = %(
+#{message}
+
+---
+Sent from ClippyBot (https://github.com/jcouture/clippybot)
+)
+      
+      Mailer.send(from: from, subject: subject, to: to, body: body)
     end
   end
 end

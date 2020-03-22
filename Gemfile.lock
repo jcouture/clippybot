@@ -38,6 +38,9 @@ GEM
     rack-protection (2.0.8.1)
       rack
     ruby2_keywords (0.0.2)
+    ruby_http_client (3.5.0)
+    sendgrid-ruby (6.1.2)
+      ruby_http_client (~> 3.4)
     sinatra (2.0.8.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -67,6 +70,7 @@ DEPENDENCIES
   async-websocket (~> 0.8.0)
   foreman (~> 0.87.0)
   puma (~> 4.3, >= 4.3.3)
+  sendgrid-ruby (~> 6.1, >= 6.1.2)
   sinatra (~> 2.0, >= 2.0.8.1)
   slack-ruby-client (~> 0.14.5)
 
