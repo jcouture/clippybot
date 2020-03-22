@@ -3,3 +3,4 @@ require 'sinatra/base'
 
 require 'clippybot/bot'
 require 'clippybot/web'
+require 'clippybot/version'
