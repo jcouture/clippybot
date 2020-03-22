@@ -49,12 +49,9 @@ module ClippyBot
       profile = client.users[data.user][:profile]
 
       first_name = profile[:first_name]
-      puts "first_name: #{first_name}"
       from = profile[:email]
-      puts "from_email: #{from}"
       subject = "A new request from #{first_name}."
       to = ENV['MAIL_TO']
-      puts "to: #{to}"
       body = %(
 #{message}
 
