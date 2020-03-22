@@ -47,10 +47,11 @@ module ClippyBot
 
     def self.send_email(client, data, message)
       profile = client.users[data.user][:profile]
-
+      
       first_name = profile[:first_name]
+      display_name = profile[:display_name_normalized]
       from = profile[:email]
-      subject = "A new request from #{first_name}."
+      subject = "Message from #{first_name} (#{display_name})."
       to = ENV['MAIL_TO']
       body = %(
 #{message}
