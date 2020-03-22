@@ -10,30 +10,41 @@ module ClippyBot
 
       client = Slack::RealTime::Client.new
       client.on :message do |data|
-        # Don't respond to ephemeral messages from Slack
-        next if data['is_ephemeral']
-
-        # Don't process messages sent from our bot user
-        next unless data.user && data.user != client.self.id
-
-        # C, it's a public channel
-        # D, it's a DM with the user
-        # G, it's either a private channel or multi-person DM
-        channel = data.channel
-        # Ignore messages sent in public or private channel or multi-person direct message
-        next unless channel.starts_with?('D')
-        
-        message = data.text
-
-        # If no message, then there's nothing to do
-        next if message.nil?
-
-        message = message.strip
-
-        # Echo back messages sent to our bot
-        client.web_client.chat_postMessage channel: data.channel, text: message
+        handle_message(client, data)
       end
       client.start_async
+    end
+    
+    private
+
+    def self.handle_message(client, data)
+      # Don't respond to ephemeral messages from Slack
+      return if data['is_ephemeral']
+
+      # Don't process messages sent from our bot user
+      return unless data.user && data.user != client.self.id
+
+      # Ignore messages sent in public or private channel or multi-person direct message
+      return unless is_direct_message?(data)
+      
+      message = data.text
+
+      # If no message, then there's nothing to do
+      return if message.nil?
+
+      message = message.strip
+
+      # Echo back messages sent to our bot
+      client.web_client.chat_postMessage(channel: data.channel, text: message)
+    end
+
+    def self.is_direct_message?(data)
+      # C, it's a public channel
+      # D, it's a DM with the user
+      # G, it's either a private channel or multi-person DM
+      channel = data.channel
+      
+      channel.starts_with?('D')
     end
   end
 end
